@@ -5,7 +5,8 @@ using static Unity.Burst.Intrinsics.X86.Avx;
 public class PlayerTake : MonoBehaviour
 {
     [Header("Settings")]
-    public float rayDistance = 2.0f; 
+    public float rayDistance = 2.0f;
+    public float PreparingCoffeTime = 2.0f;
 
     [Header("UI Elements")]
     public Text interactionText;
@@ -17,6 +18,8 @@ public class PlayerTake : MonoBehaviour
 
     public Animation CupAnim;
     public Animation LidAnim;
+
+    public ParticleSystem coffeePour;
 
     public float animationDuration = 1.0f;
 
@@ -57,7 +60,7 @@ public class PlayerTake : MonoBehaviour
                 interactionText.text = "Нажмите E, чтобы заварить кофе";
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    
+                    StartCoroutine(BrewCoffee());
                 }
             }
         }
@@ -113,5 +116,12 @@ public class PlayerTake : MonoBehaviour
 
         // Вызываем метод после завершения анимации
         TakeLid();
+    }
+
+    System.Collections.IEnumerator BrewCoffee()
+    {
+        coffeePour.Play(); // Включаем эффект струи
+        yield return new WaitForSeconds(PreparingCoffeTime); // Длительность варки
+        coffeePour.Stop(); // Выключаем эффект
     }
 }
