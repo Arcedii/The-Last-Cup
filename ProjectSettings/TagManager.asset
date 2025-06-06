@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Cups
   - Lids
+  - CoffeMachine
   layers:
   - Default
   - TransparentFX

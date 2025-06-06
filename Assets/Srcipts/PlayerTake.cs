@@ -51,6 +51,15 @@ public class PlayerTake : MonoBehaviour
                     StartCoroutine(PlayAnimationAndTakeLid());
                 }
             }
+
+            else if (hit.collider.CompareTag("CoffeMachine"))
+            {
+                interactionText.text = "Нажмите E, чтобы заварить кофе";
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    
+                }
+            }
         }
 
         
