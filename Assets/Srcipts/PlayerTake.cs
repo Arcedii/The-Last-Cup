@@ -7,6 +7,9 @@ public class PlayerTake : MonoBehaviour
     [Header("Settings")]
     public float rayDistance = 2.0f;
     public float PreparingCoffeTime = 2.0f;
+    public float elapsedTime = 0f;
+    public float startFill = 0f; // Начальный уровень
+    public float endFill = 1f; // Конечный уровень (почти полный стакан)
 
     [Header("UI Elements")]
     public Text interactionText;
@@ -15,13 +18,21 @@ public class PlayerTake : MonoBehaviour
     public GameObject Lid;
     public GameObject CupInHand;
     public GameObject Cup;
+    public GameObject Coffee;
 
     public Animation CupAnim;
     public Animation LidAnim;
 
     public ParticleSystem coffeePour;
 
+    
+
     public float animationDuration = 1.0f;
+
+    void Start()
+    { 
+        Coffee.transform.localScale = Vector3.zero;
+    }
 
     void Update()
     {
@@ -120,8 +131,21 @@ public class PlayerTake : MonoBehaviour
 
     System.Collections.IEnumerator BrewCoffee()
     {
+        elapsedTime = 0f; // Сбрасываем время
         coffeePour.Play(); // Включаем эффект струи
-        yield return new WaitForSeconds(PreparingCoffeTime); // Длительность варки
+
+        Vector3 startScale = Vector3.zero; // Начальный масштаб
+        Vector3 endScale = new Vector3(90f, 80f, 90f); // Конечный масштаб
+
+        while (elapsedTime < PreparingCoffeTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / PreparingCoffeTime;
+            Coffee.transform.localScale = Vector3.Lerp(startScale, endScale, t); // Плавное масштабирование
+            Debug.Log("Scale: " + Coffee.transform.localScale); // Отладка
+            yield return null;
+        }
+
         coffeePour.Stop(); // Выключаем эффект
     }
 }
