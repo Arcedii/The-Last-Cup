@@ -16293,6 +16293,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 720402340558520724, guid: 250aecf442fba3948923efe7958fc4c1, type: 3}
   m_PrefabInstance: {fileID: 1856492804}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &974722605
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 974722606}
+  m_Layer: 0
+  m_Name: Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &974722606
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974722605}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.029, y: -0.316, z: 1.069}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1614843882}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &996539319
 GameObject:
   m_ObjectHideFlags: 0
@@ -16811,6 +16842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
+  handTransform: {fileID: 974722606}
 --- !u!54 &1072529019
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -17758,8 +17790,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.5483592, y: 2.1871119, z: 1.1913126}
-  m_Center: {x: -0.15013258, y: 1.0006025, z: 0.09565116}
+  m_Size: {x: 2.5483592, y: 2.1871119, z: 1.6694249}
+  m_Center: {x: -0.15013258, y: 1.0006025, z: 0.33470693}
 --- !u!4 &1236883566 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e70dbb5f5414d6b4496d154403bbc357, type: 3}
@@ -19621,6 +19653,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 974722606}
   - {fileID: 996539320}
   m_Father: {fileID: 1748376392}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19755,6 +19788,7 @@ MonoBehaviour:
   CupAnim: {fileID: 168080121}
   LidAnim: {fileID: 552523160}
   coffeePour: {fileID: 75500837}
+  MoneyBoom: {fileID: 61973167}
   activityChecker: {fileID: 1053133396}
   animationDuration: 4
 --- !u!1 &1618820878

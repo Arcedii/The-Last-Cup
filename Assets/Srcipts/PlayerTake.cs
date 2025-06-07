@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using static Unity.Burst.Intrinsics.X86.Avx;
@@ -27,9 +28,11 @@ public class PlayerTake : MonoBehaviour
     public Animation LidAnim;
 
     public ParticleSystem coffeePour;
+    public ParticleSystem MoneyBoom;
     public ChildActivityChecker activityChecker;
 
     bool CoffeIsprepared = false;
+    private bool moneyEffectPlayed = false;
 
 
 
@@ -42,7 +45,14 @@ public class PlayerTake : MonoBehaviour
 
     void Update()
     {
-       
+
+        if (CoffeeCupThrow.CupIsActive == false)
+        {
+            Debug.Log("клиент радостный");
+            StartCoroutine(PlayMoneyEffectOnce());
+
+        }
+
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
@@ -85,11 +95,7 @@ public class PlayerTake : MonoBehaviour
             {
 
                 interactionText.text = "Нажмите E, чтобы дать кофе клиенту кофе";
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    Debug.Log("клиент радостный");
-                }
-
+               
             }
 
             else if (activityChecker.AreAllChildrenActive)
@@ -128,6 +134,8 @@ public class PlayerTake : MonoBehaviour
         PreparedCoffe.SetActive(false);
         PreparedCoffeInHand.SetActive(true);
     }
+
+    
 
     System.Collections.IEnumerator PlayAnimationAndTakeCup()
     {
@@ -184,5 +192,18 @@ public class PlayerTake : MonoBehaviour
         }
 
         coffeePour.Stop(); // Выключаем эффект
+    }
+
+    private IEnumerator PlayMoneyEffectOnce()
+    {
+        if (moneyEffectPlayed) yield break;
+
+        moneyEffectPlayed = true;
+        MoneyBoom.Play();
+
+        // Ждем завершения эффекта (время жизни партикла)
+        yield return new WaitForSeconds(MoneyBoom.main.duration);
+
+        // Эффект завершён. Если нужно, можешь тут что-то ещё сделать (напр. убрать клиента)
     }
 }
