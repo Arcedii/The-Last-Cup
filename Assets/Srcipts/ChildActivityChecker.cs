@@ -20,7 +20,8 @@ public class ChildActivityChecker : MonoBehaviour
             targetObject = gameObject; // Если не указан, используем текущий объект
         }
         UpdateActivityState();
-        thirdObject.SetActive(false); // Изначально третий объект выключен
+        
+
     }
 
     void Update()
@@ -45,10 +46,6 @@ public class ChildActivityChecker : MonoBehaviour
             if (AreTwoObjectsActive)
             {
                 thirdObject.SetActive(true);
-            }
-            else
-            {
-                thirdObject.SetActive(false);
             }
         }
 

@@ -29,6 +29,8 @@ public class PlayerTake : MonoBehaviour
     public ParticleSystem coffeePour;
     public ChildActivityChecker activityChecker;
 
+    bool CoffeIsprepared = false;
+
 
 
     public float animationDuration = 1.0f;
@@ -79,6 +81,17 @@ public class PlayerTake : MonoBehaviour
                 }
             }
 
+            else if (CoffeIsprepared == true & hit.collider.CompareTag("Client"))
+            {
+
+                interactionText.text = "Нажмите E, чтобы дать кофе клиенту кофе";
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    Debug.Log("клиент радостный");
+                }
+
+            }
+
             else if (activityChecker.AreAllChildrenActive)
             {
                 if (hit.collider.CompareTag("CoffeConstruct"))
@@ -90,6 +103,7 @@ public class PlayerTake : MonoBehaviour
                     }
                 }
             }
+           
         }
 
         
@@ -110,6 +124,7 @@ public class PlayerTake : MonoBehaviour
 
     public void TakeCoffee()
     {
+        CoffeIsprepared = true;
         PreparedCoffe.SetActive(false);
         PreparedCoffeInHand.SetActive(true);
     }
