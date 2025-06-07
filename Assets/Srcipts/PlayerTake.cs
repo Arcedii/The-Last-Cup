@@ -20,12 +20,16 @@ public class PlayerTake : MonoBehaviour
     public GameObject Cup;
     public GameObject Coffee;
 
+    public GameObject PreparedCoffe;
+    public GameObject PreparedCoffeInHand;
+
     public Animation CupAnim;
     public Animation LidAnim;
 
     public ParticleSystem coffeePour;
+    public ChildActivityChecker activityChecker;
 
-    
+
 
     public float animationDuration = 1.0f;
 
@@ -74,6 +78,18 @@ public class PlayerTake : MonoBehaviour
                     StartCoroutine(BrewCoffee());
                 }
             }
+
+            else if (activityChecker.AreAllChildrenActive)
+            {
+                if (hit.collider.CompareTag("CoffeConstruct"))
+                {
+                    interactionText.text = "Нажмите E, чтобы забрать кофе";
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        TakeCoffee();
+                    }
+                }
+            }
         }
 
         
@@ -92,12 +108,18 @@ public class PlayerTake : MonoBehaviour
         Lid.SetActive(false);
     }
 
+    public void TakeCoffee()
+    {
+        PreparedCoffe.SetActive(false);
+        PreparedCoffeInHand.SetActive(true);
+    }
+
     System.Collections.IEnumerator PlayAnimationAndTakeCup()
     {
         Collider cupCollider = Cup.GetComponent<Collider>();
         Collider lidCollider = Lid.GetComponent<Collider>();
 
-        lidCollider.enabled = false;
+        
         cupCollider.enabled = false;
 
 
@@ -117,7 +139,7 @@ public class PlayerTake : MonoBehaviour
         Collider lidCollider = Lid.GetComponent<Collider>();
 
         lidCollider.enabled = false;
-        cupCollider.enabled = false;
+        
 
         // Запускаем анимацию
         LidAnim.Play();
