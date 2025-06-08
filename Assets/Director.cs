@@ -1,6 +1,9 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Director : MonoBehaviour
 {
@@ -8,32 +11,50 @@ public class Director : MonoBehaviour
     private Vignette vignette;
 
     public GameObject Player;
+    public GameObject MainCamera;
     public GameObject CutSceneCamera;
 
     public GameObject CoffeCup;
-    
+    public GameObject Client1;
+    public GameObject Baricade;
+
+
+    public AudioSource MusikSceneNull;
+    public AudioSource audioSource;
+    public AudioSource bell;
+
+    public AudioClip sceneZeroReplic1;   // Музыка для сцены 1
+    public AudioClip sceneZeroReplic2;   // Музыка для сцены 2
+    public AudioClip sceneZeroReplic3; // Музыка для сцены 3
+
+    public AudioClip sceneOneReplic1; 
+    public AudioClip sceneOneReplic2; 
+
+    public GameObject Text;
+    public Image DarkScreen;
+
     void Start()
     {
+        Text.SetActive(false);
         CutSceneCamera.SetActive(true);
         Player.SetActive(false);
-        BoxCollider boxCollider = CoffeCup.GetComponent<BoxCollider>();
-        boxCollider.enabled = false;
+        BoxCollider boxColliderCoffeCup = CoffeCup.GetComponent<BoxCollider>();
+        boxColliderCoffeCup.enabled = false;
+
+
 
         if (globalVolume.profile.TryGet<Vignette>(out vignette))
         {
             // Запускаем корутину для анимации
             StartCoroutine(AnimateVignette());
         }
+
+
     }
 
     void Update()
     {
         
-    }
-
-    public void SceneOne()
-    {
-
     }
 
     private System.Collections.IEnumerator AnimateVignette()
@@ -57,5 +78,117 @@ public class Director : MonoBehaviour
         vignette.intensity.value = 0.3f;
         CutSceneCamera.SetActive(false);
         Player.SetActive(true);
+        MusikSceneNull.Play();
+        Text.SetActive(false);
+
+        StartCoroutine(PlayScenesSequentially());
     }
+
+
+    private System.Collections.IEnumerator PlayScenesSequentially()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneZeroReplic1();
+        yield return new WaitForSeconds(1f);
+        SceneZeroReplic2();
+        yield return new WaitForSeconds(1f);
+        SceneZeroReplic3();
+        yield return StartCoroutine(FadeInDarkScreen());
+        LoadSceneTwo();
+    }
+
+    private System.Collections.IEnumerator FadeInDarkScreen()
+    {
+        if (DarkScreen == null) yield break;
+
+        float duration = 5.0f; // Длительность анимации затемнения
+        float elapsedTime = 0f;
+        Color color = DarkScreen.color;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+            color.a = Mathf.Lerp(0f, 1f, t); // Плавное изменение альфа от 0 до 1
+            DarkScreen.color = color;
+            yield return null;
+        }
+
+        color.a = 1f; // Убедимся, что альфа точно 1
+        DarkScreen.color = color;
+        if (!bell.isPlaying) bell.Play(); // Проигрывание только если не играет
+    }
+
+    private System.Collections.IEnumerator FadeOutDarkScreen()
+    {
+        if (DarkScreen == null) yield break;
+
+        float duration = 5.0f; // Длительность анимации затемнения
+        float elapsedTime = 0f;
+        Color color = DarkScreen.color;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+            color.a = Mathf.Lerp(1f, 0f, t); // Плавное изменение альфа от 0 до 1
+            DarkScreen.color = color;
+            yield return null;
+        }
+
+        color.a = 0f; // Убедимся, что альфа точно 1
+        DarkScreen.color = color;
+    }
+
+    public void SceneZeroReplic1()
+    {   
+            audioSource.clip = sceneZeroReplic1;
+            audioSource.Play();
+            Debug.Log("Playing Scene 1 music.");   
+    }
+
+    public void SceneZeroReplic2()
+    {       
+            audioSource.clip = sceneZeroReplic2;
+            audioSource.Play();
+            Debug.Log("Playing Scene 2 music."); 
+    }
+
+    public void SceneZeroReplic3()
+    {
+       
+            audioSource.clip = sceneZeroReplic3;
+            audioSource.Play();
+            Debug.Log("Playing Scene 3 music.");
+        
+    }
+
+    public void LoadSceneTwo()
+    {
+        StartCoroutine(FadeOutDarkScreen());
+        Player.transform.position = new Vector3(-3.62f, 2.904f, -19.86f);
+        Client1.SetActive(true);
+        StartCoroutine(PlaySceneOneReplics());
+        BoxCollider boxColliderCoffeCup = CoffeCup.GetComponent<BoxCollider>();
+        boxColliderCoffeCup.enabled = true;
+        Text.SetActive(true);
+        Baricade.SetActive(true);
+    }
+
+
+    private IEnumerator PlaySceneOneReplics()
+    {
+        audioSource.clip = sceneOneReplic1;
+        audioSource.Play();
+        yield return new WaitForSeconds(audioSource.clip.length); // Ждём пока проиграется
+
+        yield return new WaitForSeconds(1f); // Затем дополнительная задержка
+
+        audioSource.clip = sceneOneReplic2;
+        audioSource.Play();
+        yield return new WaitForSeconds(audioSource.clip.length); // Ждём пока проиграется
+
+ 
+    }
+
 }
