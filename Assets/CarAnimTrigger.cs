@@ -9,6 +9,23 @@ public class CarAnimTrigger : MonoBehaviour
 
     private bool hasActivated = false;
 
+    private bool monsterDisabled = false;
+
+    void Update()
+    {
+        AnimatorStateInfo state = carAnimator.GetCurrentAnimatorStateInfo(0);
+        if (state.IsName("PoliceCarAnim"))
+        {
+            if (state.normalizedTime >= 0.477f && !monsterDisabled)
+            {
+                monsterDisabled = true;
+                director.DisableMonster();  // גûחûגאול לועמה ף DirectorFinalScene
+            }
+        }
+    }
+
+
+
     void OnTriggerEnter(Collider other)
     {
         if (!hasActivated && other.CompareTag("Player"))

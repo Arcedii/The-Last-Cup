@@ -67,4 +67,13 @@ public class DirectorFinalScene : MonoBehaviour
             audioSource.Play();
         }
     }
+
+    public void DisableMonster()
+    {
+        if (Monster != null)
+        {
+            Monster.SetActive(false);
+        }
+    }
+
 }
