@@ -16704,7 +16704,7 @@ MonoBehaviour:
   smileBlendShapeIndex: 0
   smileAnimationDuration: 2
   paymentSound: {fileID: 1539145021}
-  directorFinalScene: {fileID: 1736311806}
+  directorFinalScene: {fileID: 1920728727}
   directorScript: {fileID: 2064890186}
   bellSound: {fileID: 2050125455}
 --- !u!1 &1618820878
@@ -18218,11 +18218,6 @@ MeshFilter:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 83f48194635410342b02ef2fa4c94eba, type: 3}
   m_PrefabInstance: {fileID: 140638878}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1736311806 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -2762428679126035473, guid: c7caa330582288d43accfbecd8d173ea, type: 3}
-  m_PrefabInstance: {fileID: 1388123182}
   m_PrefabAsset: {fileID: 0}
 --- !u!137 &1736311808 stripped
 SkinnedMeshRenderer:

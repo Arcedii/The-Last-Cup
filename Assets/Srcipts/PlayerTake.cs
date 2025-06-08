@@ -174,6 +174,9 @@ public class PlayerTake : MonoBehaviour
             yield return new WaitForSeconds(paymentSound.clip.length);
         }
 
+        // 4. Fade In
+        yield return StartCoroutine(directorScript.FadeInDarkScreen());
+
         // 3. Звук колокольчика
         if (bellSound != null && bellSound.clip != null)
         {
@@ -181,9 +184,7 @@ public class PlayerTake : MonoBehaviour
             yield return new WaitForSeconds(bellSound.clip.length);
         }
 
-        // 4. Fade In
-        yield return StartCoroutine(directorScript.FadeInDarkScreen());
-
+       
         // 5. Активация финального объекта
         if (directorFinalScene != null)
             directorFinalScene.SetActive(true);

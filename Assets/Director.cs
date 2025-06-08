@@ -1,4 +1,4 @@
-using System.Collections;
+п»їusing System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -23,9 +23,9 @@ public class Director : MonoBehaviour
     public AudioSource audioSource;
     public AudioSource bell;
 
-    public AudioClip sceneZeroReplic1;   // Музыка для сцены 1
-    public AudioClip sceneZeroReplic2;   // Музыка для сцены 2
-    public AudioClip sceneZeroReplic3; // Музыка для сцены 3
+    public AudioClip sceneZeroReplic1;   // РњСѓР·С‹РєР° РґР»СЏ СЃС†РµРЅС‹ 1
+    public AudioClip sceneZeroReplic2;   // РњСѓР·С‹РєР° РґР»СЏ СЃС†РµРЅС‹ 2
+    public AudioClip sceneZeroReplic3; // РњСѓР·С‹РєР° РґР»СЏ СЃС†РµРЅС‹ 3
 
     public AudioClip sceneOneReplic1; 
     public AudioClip sceneOneReplic2; 
@@ -45,7 +45,7 @@ public class Director : MonoBehaviour
 
         if (globalVolume.profile.TryGet<Vignette>(out vignette))
         {
-            // Запускаем корутину для анимации
+            // Р—Р°РїСѓСЃРєР°РµРј РєРѕСЂСѓС‚РёРЅСѓ РґР»СЏ Р°РЅРёРјР°С†РёРё
             StartCoroutine(AnimateVignette());
         }
 
@@ -59,22 +59,22 @@ public class Director : MonoBehaviour
 
     private System.Collections.IEnumerator AnimateVignette()
     {
-        float duration = 4.0f; // Длительность анимации в секундах
+        float duration = 4.0f; // Р”Р»РёС‚РµР»СЊРЅРѕСЃС‚СЊ Р°РЅРёРјР°С†РёРё РІ СЃРµРєСѓРЅРґР°С…
         float elapsedTime = 0f;
 
-        // Начальное значение Intensity
+        // РќР°С‡Р°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Intensity
         vignette.intensity.value = 1.0f;
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / duration;
-            // Плавное изменение от 1 до 0.3 с использованием Lerp
+            // РџР»Р°РІРЅРѕРµ РёР·РјРµРЅРµРЅРёРµ РѕС‚ 1 РґРѕ 0.3 СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј Lerp
             vignette.intensity.value = Mathf.Lerp(1.0f, 0.3f, t);
             yield return null;
         }
 
-        // Убеждаемся, что значение точно установлено в 0.3
+        // РЈР±РµР¶РґР°РµРјСЃСЏ, С‡С‚Рѕ Р·РЅР°С‡РµРЅРёРµ С‚РѕС‡РЅРѕ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ РІ 0.3
         vignette.intensity.value = 0.3f;
         CutSceneCamera.SetActive(false);
         Player.SetActive(true);
@@ -87,11 +87,11 @@ public class Director : MonoBehaviour
 
     private System.Collections.IEnumerator PlayScenesSequentially()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(60f);
         SceneZeroReplic1();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         SceneZeroReplic2();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         SceneZeroReplic3();
         yield return StartCoroutine(FadeInDarkScreen());
         LoadSceneTwo();
@@ -99,22 +99,40 @@ public class Director : MonoBehaviour
 
     public IEnumerator FadeInDarkScreen()
     {
-        float duration = 1f;
-        float elapsed = 0f;
+        if (DarkScreen == null) yield break;
+
+        float duration = 5.0f; // Р’СЂРµРјСЏ Р·Р°С‚РµРјРЅРµРЅРёСЏ
+        float elapsedTime = 0f;
         Color color = DarkScreen.color;
 
-        while (elapsed < duration)
+        // РџР»Р°РІРЅРѕРµ Р·Р°С‚РµРјРЅРµРЅРёРµ
+        while (elapsedTime < duration)
         {
-            elapsed += Time.deltaTime;
-            color.a = Mathf.Lerp(0f, 1f, elapsed / duration);
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+            color.a = Mathf.Lerp(0f, 1f, t); // О± РѕС‚ 0 РґРѕ 1
             DarkScreen.color = color;
             yield return null;
         }
+
+        // РЈР±РµРґРёРјСЃСЏ, С‡С‚Рѕ СЌРєСЂР°РЅ РїРѕР»РЅРѕСЃС‚СЊСЋ С‡С‘СЂРЅС‹Р№
+        color.a = 1f;
+        DarkScreen.color = color;
+
+     
+        yield return new WaitForSeconds(2f);
+
+       
+        if (!bell.isPlaying) bell.Play();
+
+       
+        Client1.SetActive(false);
     }
+
 
     public IEnumerator FadeOutDarkScreen()
     {
-        float duration = 1f;
+        float duration = 5f;
         float elapsed = 0f;
         Color color = DarkScreen.color;
 
@@ -168,13 +186,13 @@ public class Director : MonoBehaviour
     {
         audioSource.clip = sceneOneReplic1;
         audioSource.Play();
-        yield return new WaitForSeconds(audioSource.clip.length); // Ждём пока проиграется
+        yield return new WaitForSeconds(audioSource.clip.length); // Р–РґС‘Рј РїРѕРєР° РїСЂРѕРёРіСЂР°РµС‚СЃСЏ
 
-        yield return new WaitForSeconds(1f); // Затем дополнительная задержка
+        yield return new WaitForSeconds(1f); // Р—Р°С‚РµРј РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅР°СЏ Р·Р°РґРµСЂР¶РєР°
 
         audioSource.clip = sceneOneReplic2;
         audioSource.Play();
-        yield return new WaitForSeconds(audioSource.clip.length); // Ждём пока проиграется
+        yield return new WaitForSeconds(audioSource.clip.length); // Р–РґС‘Рј РїРѕРєР° РїСЂРѕРёРіСЂР°РµС‚СЃСЏ
 
  
     }
