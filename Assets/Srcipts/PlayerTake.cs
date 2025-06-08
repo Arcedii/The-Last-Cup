@@ -36,6 +36,15 @@ public class PlayerTake : MonoBehaviour
 
     private float elapsedTime = 0f;
 
+    [Header("Client Reaction")]
+    public SkinnedMeshRenderer clientFaceRenderer; // Renderer клиента с BlendShapes
+    public int smileBlendShapeIndex = 0; // Индекс BlendShape "Smile"
+    public float smileAnimationDuration = 1.5f;
+    public AudioSource paymentSound; // Звук оплаты
+    public GameObject directorFinalScene; // Объект финальной сцены
+    public Director directorScript; // Ссылка на скрипт Director
+
+
     void Start()
     {
         Coffee.transform.localScale = Vector3.zero;
@@ -134,13 +143,45 @@ public class PlayerTake : MonoBehaviour
     public void GiveCoffeeToClient()
     {
         PreparedCoffeeInHand.SetActive(false);
-        CoffeeCupThrow.CupIsActive = false; // Предполагается, что это статическая переменная
+        CoffeeCupThrow.CupIsActive = false;
         coffeeReady = false;
         hasCup = false;
         hasLid = false;
         coffeeBrewed = false;
-        Debug.Log("Кофе передано клиенту");
+
+        StartCoroutine(ReactClientAfterCoffee());
     }
+
+    private IEnumerator ReactClientAfterCoffee()
+    {
+        // 1. BlendShape-анимация улыбки
+        float elapsed = 0f;
+        while (elapsed < smileAnimationDuration)
+        {
+            elapsed += Time.deltaTime;
+            float weight = Mathf.Lerp(0f, 100f, elapsed / smileAnimationDuration);
+            clientFaceRenderer.SetBlendShapeWeight(smileBlendShapeIndex, weight);
+            yield return null;
+        }
+
+        // 2. Звук оплаты
+        if (paymentSound != null && paymentSound.clip != null)
+        {
+            paymentSound.Play();
+            yield return new WaitForSeconds(paymentSound.clip.length);
+        }
+
+        // 3. Fade In
+        yield return StartCoroutine(directorScript.FadeInDarkScreen());
+
+        // 4. Активация финального объекта
+        if (directorFinalScene != null)
+            directorFinalScene.SetActive(true);
+
+        // 5. Fade Out
+        yield return StartCoroutine(directorScript.FadeOutDarkScreen());
+    }
+
 
     System.Collections.IEnumerator PlayAnimationAndTakeCup()
     {

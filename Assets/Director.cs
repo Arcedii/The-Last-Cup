@@ -97,48 +97,36 @@ public class Director : MonoBehaviour
         LoadSceneTwo();
     }
 
-    private System.Collections.IEnumerator FadeInDarkScreen()
+    public IEnumerator FadeInDarkScreen()
     {
-        if (DarkScreen == null) yield break;
-
-        float duration = 5.0f; // Длительность анимации затемнения
-        float elapsedTime = 0f;
+        float duration = 1f;
+        float elapsed = 0f;
         Color color = DarkScreen.color;
 
-        while (elapsedTime < duration)
+        while (elapsed < duration)
         {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / duration;
-            color.a = Mathf.Lerp(0f, 1f, t); // Плавное изменение альфа от 0 до 1
+            elapsed += Time.deltaTime;
+            color.a = Mathf.Lerp(0f, 1f, elapsed / duration);
             DarkScreen.color = color;
             yield return null;
         }
-
-        color.a = 1f; // Убедимся, что альфа точно 1
-        DarkScreen.color = color;
-        if (!bell.isPlaying) bell.Play(); // Проигрывание только если не играет
     }
 
-    private System.Collections.IEnumerator FadeOutDarkScreen()
+    public IEnumerator FadeOutDarkScreen()
     {
-        if (DarkScreen == null) yield break;
-
-        float duration = 5.0f; // Длительность анимации затемнения
-        float elapsedTime = 0f;
+        float duration = 1f;
+        float elapsed = 0f;
         Color color = DarkScreen.color;
 
-        while (elapsedTime < duration)
+        while (elapsed < duration)
         {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / duration;
-            color.a = Mathf.Lerp(1f, 0f, t); // Плавное изменение альфа от 0 до 1
+            elapsed += Time.deltaTime;
+            color.a = Mathf.Lerp(1f, 0f, elapsed / duration);
             DarkScreen.color = color;
             yield return null;
         }
-
-        color.a = 0f; // Убедимся, что альфа точно 1
-        DarkScreen.color = color;
     }
+
 
     public void SceneZeroReplic1()
     {   
