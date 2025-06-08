@@ -1,16 +1,13 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.Burst.Intrinsics.X86.Avx;
+using System.Collections;
 
 public class PlayerTake : MonoBehaviour
 {
     [Header("Settings")]
     public float rayDistance = 2.0f;
-    public float PreparingCoffeTime = 2.0f;
-    public float elapsedTime = 0f;
-    public float startFill = 0f; // Начальный уровень
-    public float endFill = 1f; // Конечный уровень (почти полный стакан)
+    public float preparingCoffeeTime = 2.0f;
+    public float animationDuration = 1.0f;
 
     [Header("UI Elements")]
     public Text interactionText;
@@ -21,8 +18,8 @@ public class PlayerTake : MonoBehaviour
     public GameObject Cup;
     public GameObject Coffee;
 
-    public GameObject PreparedCoffe;
-    public GameObject PreparedCoffeInHand;
+    public GameObject PreparedCoffee;
+    public GameObject PreparedCoffeeInHand;
 
     public Animation CupAnim;
     public Animation LidAnim;
@@ -31,58 +28,46 @@ public class PlayerTake : MonoBehaviour
     public ParticleSystem MoneyBoom;
     public ChildActivityChecker activityChecker;
 
-    bool CoffeIsprepared = false;
+    private bool hasCup = false; // Состояние: стакан взят
+    private bool coffeeBrewed = false; // Состояние: кофе налит
+    private bool hasLid = false; // Состояние: крышка взята
+    private bool coffeeReady = false; // Состояние: кофе готов к выдаче
     private bool moneyEffectPlayed = false;
 
-
-
-    public float animationDuration = 1.0f;
+    private float elapsedTime = 0f;
 
     void Start()
-    { 
+    {
         Coffee.transform.localScale = Vector3.zero;
+        LidInHand.SetActive(false);
+        CupInHand.SetActive(false);
+        PreparedCoffeeInHand.SetActive(false);
     }
 
     void Update()
     {
-
         if (CoffeeCupThrow.CupIsActive == false)
         {
-            Debug.Log("клиент радостный");
+            Debug.Log("Клиент радостный");
             StartCoroutine(PlayMoneyEffectOnce());
-
         }
 
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
-        
         interactionText.text = "";
 
         if (Physics.Raycast(ray, out hit, rayDistance))
         {
-          
-            if (hit.collider.CompareTag("Cups"))
+            if (hit.collider.CompareTag("Cups") && !hasCup)
             {
-                interactionText.text = "Нажмите  E, чтобы  взять  стаканчик";
-
+                interactionText.text = "Нажмите E, чтобы взять стаканчик";
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     StartCoroutine(PlayAnimationAndTakeCup());
                 }
             }
-            
-            else if (hit.collider.CompareTag("Lids"))
-            {
-                interactionText.text = "Нажмите  E,  чтобы  взять  крышку";
-
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    StartCoroutine(PlayAnimationAndTakeLid());
-                }
-            }
-
-            else if (hit.collider.CompareTag("CoffeMachine"))
+            else if (hit.collider.CompareTag("CoffeMachine") && hasCup && !coffeeBrewed)
             {
                 interactionText.text = "Нажмите E, чтобы заварить кофе";
                 if (Input.GetKeyDown(KeyCode.E))
@@ -90,15 +75,15 @@ public class PlayerTake : MonoBehaviour
                     StartCoroutine(BrewCoffee());
                 }
             }
-
-            else if (CoffeIsprepared == true & hit.collider.CompareTag("Client"))
+            else if (hit.collider.CompareTag("Lids") && coffeeBrewed && !hasLid)
             {
-
-                interactionText.text = "Нажмите E, чтобы дать кофе клиенту кофе";
-               
+                interactionText.text = "Нажмите E, чтобы взять крышку";
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    StartCoroutine(PlayAnimationAndTakeLid());
+                }
             }
-
-            else if (activityChecker.AreAllChildrenActive)
+            else if (activityChecker.AreAllChildrenActive && hasLid && !coffeeReady)
             {
                 if (hit.collider.CompareTag("CoffeConstruct"))
                 {
@@ -109,10 +94,16 @@ public class PlayerTake : MonoBehaviour
                     }
                 }
             }
-           
+            else if (coffeeReady && hit.collider.CompareTag("Client"))
+            {
+                interactionText.text = "Нажмите E, чтобы дать кофе клиенту";
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    GiveCoffeeToClient();
+                }
+            }
         }
 
-        
         Debug.DrawRay(transform.position, transform.forward * rayDistance, Color.red);
     }
 
@@ -120,78 +111,77 @@ public class PlayerTake : MonoBehaviour
     {
         CupInHand.SetActive(true);
         Cup.SetActive(false);
+        hasCup = true;
+        Debug.Log("Стакан взят");
     }
 
     public void TakeLid()
     {
         LidInHand.SetActive(true);
         Lid.SetActive(false);
+        hasLid = true;
+        Debug.Log("Крышка взята");
     }
 
     public void TakeCoffee()
     {
-        CoffeIsprepared = true;
-        PreparedCoffe.SetActive(false);
-        PreparedCoffeInHand.SetActive(true);
+        PreparedCoffee.SetActive(false);
+        PreparedCoffeeInHand.SetActive(true);
+        coffeeReady = true;
+        Debug.Log("Кофе забран");
     }
 
-    
+    public void GiveCoffeeToClient()
+    {
+        PreparedCoffeeInHand.SetActive(false);
+        CoffeeCupThrow.CupIsActive = false; // Предполагается, что это статическая переменная
+        coffeeReady = false;
+        hasCup = false;
+        hasLid = false;
+        coffeeBrewed = false;
+        Debug.Log("Кофе передано клиенту");
+    }
 
     System.Collections.IEnumerator PlayAnimationAndTakeCup()
     {
         Collider cupCollider = Cup.GetComponent<Collider>();
-        Collider lidCollider = Lid.GetComponent<Collider>();
-
-        
         cupCollider.enabled = false;
 
-
-        // Запускаем анимацию
         CupAnim.Play();
-
-        // Ждем завершения анимации (по длительности)
         yield return new WaitForSeconds(animationDuration);
-
-        // Вызываем метод после завершения анимации
         TakeCup();
     }
 
     System.Collections.IEnumerator PlayAnimationAndTakeLid()
     {
-        Collider cupCollider = Cup.GetComponent<Collider>();
         Collider lidCollider = Lid.GetComponent<Collider>();
-
         lidCollider.enabled = false;
-        
 
-        // Запускаем анимацию
         LidAnim.Play();
-
-        // Ждем завершения анимации (по длительности)
         yield return new WaitForSeconds(animationDuration);
-
-        // Вызываем метод после завершения анимации
         TakeLid();
     }
 
     System.Collections.IEnumerator BrewCoffee()
     {
-        elapsedTime = 0f; // Сбрасываем время
-        coffeePour.Play(); // Включаем эффект струи
+        elapsedTime = 0f;
+        coffeePour.Play();
 
-        Vector3 startScale = Vector3.zero; // Начальный масштаб
-        Vector3 endScale = new Vector3(90f, 80f, 90f); // Конечный масштаб
+        Vector3 startScale = Vector3.zero;
+        Vector3 endScale = new Vector3(90f, 80f, 90f);
 
-        while (elapsedTime < PreparingCoffeTime)
+        while (elapsedTime < preparingCoffeeTime)
         {
             elapsedTime += Time.deltaTime;
-            float t = elapsedTime / PreparingCoffeTime;
-            Coffee.transform.localScale = Vector3.Lerp(startScale, endScale, t); // Плавное масштабирование
-            Debug.Log("Scale: " + Coffee.transform.localScale); // Отладка
+            float t = elapsedTime / preparingCoffeeTime;
+            Coffee.transform.localScale = Vector3.Lerp(startScale, endScale, t);
+            Debug.Log("Scale: " + Coffee.transform.localScale);
             yield return null;
         }
 
-        coffeePour.Stop(); // Выключаем эффект
+        coffeePour.Stop();
+        coffeeBrewed = true;
+        Debug.Log("Кофе заварен");
     }
 
     private IEnumerator PlayMoneyEffectOnce()
@@ -200,10 +190,6 @@ public class PlayerTake : MonoBehaviour
 
         moneyEffectPlayed = true;
         MoneyBoom.Play();
-
-        // Ждем завершения эффекта (время жизни партикла)
         yield return new WaitForSeconds(MoneyBoom.main.duration);
-
-        // Эффект завершён. Если нужно, можешь тут что-то ещё сделать (напр. убрать клиента)
     }
 }
