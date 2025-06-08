@@ -16702,10 +16702,11 @@ MonoBehaviour:
   activityChecker: {fileID: 1053133396}
   clientFaceRenderer: {fileID: 1736311808}
   smileBlendShapeIndex: 0
-  smileAnimationDuration: 1.5
+  smileAnimationDuration: 2
   paymentSound: {fileID: 1539145021}
   directorFinalScene: {fileID: 1736311806}
   directorScript: {fileID: 2064890186}
+  bellSound: {fileID: 2050125455}
 --- !u!1 &1618820878
 GameObject:
   m_ObjectHideFlags: 0
@@ -19925,43 +19926,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1920728729}
-  - component: {fileID: 1920728728}
   m_Layer: 0
   m_Name: Director Final Scene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1920728728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1920728727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ca83ca391d1a1c4ba9180aab4626b96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  globalVolume: {fileID: 645918040}
-  Player: {fileID: 1748376390}
-  MainCamera: {fileID: 1614843881}
-  CutSceneCamera: {fileID: 2014083870}
-  CoffeCup: {fileID: 168080117}
-  Client1: {fileID: 1388123183}
-  Baricade: {fileID: 821810802}
-  MusikSceneNull: {fileID: 252984233}
-  audioSource: {fileID: 1916855637}
-  bell: {fileID: 2050125455}
-  sceneZeroReplic1: {fileID: 8300000, guid: bea4ac0d69bd58f43adbcd5deb836e96, type: 3}
-  sceneZeroReplic2: {fileID: 8300000, guid: 246f165d91aa0fb49a56cb144973e360, type: 3}
-  sceneZeroReplic3: {fileID: 8300000, guid: 6db4d26409b38b54e949e194b416f36e, type: 3}
-  sceneOneReplic1: {fileID: 8300000, guid: 20c88c038d68bbc478a220fef53a624e, type: 3}
-  sceneOneReplic2: {fileID: 8300000, guid: afa5736db77fde848aa4b0172eba8bee, type: 3}
-  Text: {fileID: 44625914}
-  DarkScreen: {fileID: 423075327}
+  m_IsActive: 0
 --- !u!4 &1920728729
 Transform:
   m_ObjectHideFlags: 0

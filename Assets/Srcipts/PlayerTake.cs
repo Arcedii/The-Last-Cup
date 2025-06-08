@@ -44,6 +44,9 @@ public class PlayerTake : MonoBehaviour
     public GameObject directorFinalScene; // Объект финальной сцены
     public Director directorScript; // Ссылка на скрипт Director
 
+    public AudioSource bellSound; // Звук колокольчика
+
+
 
     void Start()
     {
@@ -154,7 +157,7 @@ public class PlayerTake : MonoBehaviour
 
     private IEnumerator ReactClientAfterCoffee()
     {
-        // 1. BlendShape-анимация улыбки
+        // 1. Анимация улыбки клиента через BlendShape
         float elapsed = 0f;
         while (elapsed < smileAnimationDuration)
         {
@@ -171,16 +174,24 @@ public class PlayerTake : MonoBehaviour
             yield return new WaitForSeconds(paymentSound.clip.length);
         }
 
-        // 3. Fade In
+        // 3. Звук колокольчика
+        if (bellSound != null && bellSound.clip != null)
+        {
+            bellSound.Play();
+            yield return new WaitForSeconds(bellSound.clip.length);
+        }
+
+        // 4. Fade In
         yield return StartCoroutine(directorScript.FadeInDarkScreen());
 
-        // 4. Активация финального объекта
+        // 5. Активация финального объекта
         if (directorFinalScene != null)
             directorFinalScene.SetActive(true);
 
-        // 5. Fade Out
+        // 6. Fade Out
         yield return StartCoroutine(directorScript.FadeOutDarkScreen());
     }
+
 
 
     System.Collections.IEnumerator PlayAnimationAndTakeCup()
