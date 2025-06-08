@@ -12,7 +12,7 @@ public class DirectorFinalScene : MonoBehaviour
     [Header("Объекты сцены")]
     public GameObject Monster;
     public GameObject PoliceCar;
-    
+
 
     private bool hasStarted = false;
 
