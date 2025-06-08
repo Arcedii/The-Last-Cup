@@ -46,6 +46,9 @@ public class PlayerTake : MonoBehaviour
 
     public AudioSource bellSound; // Звук колокольчика
 
+    public AudioSource coffeePourAudio;
+
+
 
 
     void Start()
@@ -220,6 +223,13 @@ public class PlayerTake : MonoBehaviour
         elapsedTime = 0f;
         coffeePour.Play();
 
+        // Запускаем звук налива
+        if (coffeePourAudio != null)
+        {
+            coffeePourAudio.loop = true;
+            coffeePourAudio.Play();
+        }
+
         Vector3 startScale = Vector3.zero;
         Vector3 endScale = new Vector3(90f, 80f, 90f);
 
@@ -230,6 +240,11 @@ public class PlayerTake : MonoBehaviour
             Coffee.transform.localScale = Vector3.Lerp(startScale, endScale, t);
             Debug.Log("Scale: " + Coffee.transform.localScale);
             yield return null;
+        }
+
+        if (coffeePourAudio != null)
+        {
+            coffeePourAudio.Stop();
         }
 
         coffeePour.Stop();

@@ -87,7 +87,7 @@ public class Director : MonoBehaviour
 
     private System.Collections.IEnumerator PlayScenesSequentially()
     {
-        yield return new WaitForSeconds(60f);
+        yield return new WaitForSeconds(1f);
         SceneZeroReplic1();
         yield return new WaitForSeconds(2f);
         SceneZeroReplic2();

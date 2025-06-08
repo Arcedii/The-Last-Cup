@@ -6412,11 +6412,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0187a2a2b55df04885781834dfaa8b4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.293
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0187a2a2b55df04885781834dfaa8b4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.208
+      value: 2.19
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0187a2a2b55df04885781834dfaa8b4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6482,6 +6482,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0187a2a2b55df04885781834dfaa8b4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 219126828}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0187a2a2b55df04885781834dfaa8b4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 219126829}
   m_SourcePrefab: {fileID: 100100000, guid: c0187a2a2b55df04885781834dfaa8b4, type: 3}
 --- !u!4 &219126825 stripped
 Transform:
@@ -6545,6 +6548,103 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   object1: {fileID: 2093339563}
   object2: {fileID: 214709912}
+--- !u!82 &219126829
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214709912}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 71d25fff929c9e94385e81eae7b2597a, type: 3}
+  m_Resource: {fileID: 8300000, guid: 71d25fff929c9e94385e81eae7b2597a, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &231982344
 GameObject:
   m_ObjectHideFlags: 0
@@ -14960,7 +15060,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c7caa330582288d43accfbecd8d173ea, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c7caa330582288d43accfbecd8d173ea, type: 3}
       propertyPath: m_TagString
@@ -15009,8 +15109,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.1713957, y: 2.1871119, z: 1.669425}
-  m_Center: {x: -0.011056861, y: 1.0006025, z: 0.334707}
+  m_Size: {x: 6.8306384, y: 4.543508, z: 2.1796398}
+  m_Center: {x: 0.32754105, y: 2.1788006, z: 0.58980995}
 --- !u!95 &1388123186
 Animator:
   serializedVersion: 7
@@ -16707,6 +16807,7 @@ MonoBehaviour:
   directorFinalScene: {fileID: 1920728727}
   directorScript: {fileID: 2064890186}
   bellSound: {fileID: 2050125455}
+  coffeePourAudio: {fileID: 219126829}
 --- !u!1 &1618820878
 GameObject:
   m_ObjectHideFlags: 0
