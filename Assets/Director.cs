@@ -87,11 +87,11 @@ public class Director : MonoBehaviour
 
     private System.Collections.IEnumerator PlayScenesSequentially()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(30f);
         SceneZeroReplic1();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
         SceneZeroReplic2();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
         SceneZeroReplic3();
         yield return StartCoroutine(FadeInDarkScreen());
         LoadSceneTwo();
