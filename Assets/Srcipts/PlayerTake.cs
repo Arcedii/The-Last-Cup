@@ -17,6 +17,7 @@ public class PlayerTake : MonoBehaviour
     public GameObject CupInHand;
     public GameObject Cup;
     public GameObject Coffee;
+    public GameObject Baricade;
 
     public GameObject PreparedCoffee;
     public GameObject PreparedCoffeeInHand;
@@ -187,13 +188,15 @@ public class PlayerTake : MonoBehaviour
             yield return new WaitForSeconds(bellSound.clip.length);
         }
 
+        Baricade.SetActive(false);
+
+        // 6. Fade Out
+        yield return StartCoroutine(directorScript.FadeOutDarkScreen());
+
        
         // 5. Активация финального объекта
         if (directorFinalScene != null)
             directorFinalScene.SetActive(true);
-
-        // 6. Fade Out
-        yield return StartCoroutine(directorScript.FadeOutDarkScreen());
     }
 
 
