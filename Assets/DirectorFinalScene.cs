@@ -18,7 +18,8 @@ public class DirectorFinalScene : MonoBehaviour
     public float fadeDuration = 2f;   // Длительность затемнения
 
     [Header("Игрок")]
-    public GameObject player;                 // Ссылка на игрока
+    public GameObject player;
+    public GameObject FinalCutSceneCamera;// Ссылка на игрока
 
     private PlayerMovement playerMovement;    // Скрипт игрока
 
@@ -114,13 +115,25 @@ public class DirectorFinalScene : MonoBehaviour
             playerMovement.enabled = false;
         }
 
-        // Запускаем затемнение экрана
         if (fadePanel != null)
         {
+            // Сначала затемнение
             yield return StartCoroutine(FadeIn());
+
+            ExitBut.SetActive(true);
+            player.SetActive(true);
+            Monster.SetActive(false);
+            FinalCutSceneCamera.SetActive(true);
+            MonstrJump.SetActive(false);
+
+            // Затем пауза (по желанию, например 1 секунда)
+            yield return new WaitForSeconds(1f);
+
+            // Потом раззатемнение
+            yield return StartCoroutine(FadeOut());
         }
 
-         ExitBut.SetActive(false);
+
     }
 
     private IEnumerator FadeIn()
@@ -136,6 +149,21 @@ public class DirectorFinalScene : MonoBehaviour
         }
         fadePanel.color = new Color(c.r, c.g, c.b, 1f);
     }
+
+    private IEnumerator FadeOut()
+    {
+        float elapsed = 0f;
+        Color c = fadePanel.color;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Clamp01(1f - (elapsed / fadeDuration));
+            fadePanel.color = new Color(c.r, c.g, c.b, alpha);
+            yield return null;
+        }
+        fadePanel.color = new Color(c.r, c.g, c.b, 0f);
+    }
+
 
     private void SetFadeAlpha(float alpha)
     {

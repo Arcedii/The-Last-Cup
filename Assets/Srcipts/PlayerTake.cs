@@ -18,6 +18,7 @@ public class PlayerTake : MonoBehaviour
     public GameObject Cup;
     public GameObject Coffee;
     public GameObject Baricade;
+    public GameObject PoliceCarTrigger;
 
     public GameObject PreparedCoffee;
     public GameObject PreparedCoffeeInHand;
@@ -189,6 +190,7 @@ public class PlayerTake : MonoBehaviour
         }
 
         Baricade.SetActive(false);
+        PoliceCarTrigger.SetActive(true);
 
         // 6. Fade Out
         yield return StartCoroutine(directorScript.FadeOutDarkScreen());
